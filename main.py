@@ -15,15 +15,17 @@ def main():
     pyr = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
     while True:
+        dt = clock.tick(60) / 1000.0
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        
+
         screen.fill("black")
+        pyr.update(dt)
         pyr.draw(screen)
         pygame.display.flip()
-        clock.tick(60)
-        dt = clock.tick() / 1000.0
         print(f"Delta time: {dt} seconds")
 
 
