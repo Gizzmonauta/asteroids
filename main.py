@@ -2,6 +2,8 @@ import pygame
 from constants import *
 from logger import *
 from player import *
+from asteroid import *
+from asteroidfield import AsteroidField
 
 
 def main():
@@ -12,7 +14,15 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+    Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable)
     pyr = Player(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+    Asteroid_Field = AsteroidField()
+
 
     while True:
         dt = clock.tick(60) / 1000.0
@@ -20,14 +30,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        
 
         screen.fill("black")
-        pyr.update(dt)
-        pyr.draw(screen)
+        updatable.update(dt)
+        for drawing in drawable:
+            drawing.draw(screen)
         pygame.display.flip()
         print(f"Delta time: {dt} seconds")
-
 
 
 if __name__ == "__main__":
